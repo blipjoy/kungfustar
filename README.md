@@ -1,18 +1,11 @@
-# Blipjoy Template
+# Kung Fu Star
 
-A template to ease creating new games using melonJS.
+A game for LD48 #28 : "You Only Get One" + bonus #NOKILL
 
 ## About
 
-I hate starting from scratch when building a brand new game! I hate it so much
-that it causes me to procrastinate when starting a new project. This template is
-an attempt to lower the entry barrier for writing that first line of code!
-
-The template ships with a new default loading screen and intro screen featuring
-the Blipjoy logo. Since this will serve mostly for my own benefit, I decided to
-just use my own branding.
-
-Use `#debug` at the end of the URL to skip the intro and enable debug mode.
+This is a game about being a Kung Fu Star. A Kung Fu Star that only has one
+tool.  A Ninja Rope?  Maybe.
 
 ## Develop
 
@@ -22,6 +15,7 @@ Follow me:
 
 * [Blog](http://blog.kodewerx.org/)
 * [@kodewerx](http://twitter.com/kodewerx)
+* [Twitch.tv](http://www.twitch.tv/kodewerx)
 
 ### Dependencies
 
