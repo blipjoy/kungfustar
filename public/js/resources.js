@@ -4,6 +4,7 @@ game.resources = {
         // Sprites
         "player",
         "ninjastar",
+        "smoke",
 
         // Tilesets
         "tileset",
@@ -22,7 +23,7 @@ game.resources = {
 
     /* Maps. */
     "map" : [
-        "test"
+        "level1"
     ],
 
     /* Sound effects. */

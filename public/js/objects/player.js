@@ -11,7 +11,7 @@ game.GhostFrame = me.SpriteObject.extend({
         this.scale.x = frame.scaleX;
         this.scaleFlag = this.scale.x !== 1;
         
-        new me.Tween(this)
+        me.entityPool.newInstanceOf("me.Tween", this)
             .to({
                 "alpha" : 0,
                 "size" : 1.25
@@ -50,7 +50,8 @@ game.Player = me.ObjectEntity.extend({
 
         // Animation
         this.tick = me.timer.getTime();
-        this.hPos = new me.Vector2d(
+        this.hPos = me.entityPool.newInstanceOf(
+            "me.Vector2d",
             this.pos.x + this.hWidth,
             this.pos.y + this.hHeight
         );
@@ -88,8 +89,8 @@ game.Player = me.ObjectEntity.extend({
         function setPhysics() {
             if (sprinting) {
                 // YUCK!
-                self.setVelocity(1.5, 17);
-                self.setMaxVelocity(7, 17);
+                self.setVelocity(1.5, 20);
+                self.setMaxVelocity(9, 20);
                 self.setFriction(0.95, 0);
             }
             else {
@@ -146,7 +147,8 @@ game.Player = me.ObjectEntity.extend({
             var delta = this.hPos.distance(rope.end) - rope.maxLength;
             if (delta > 0) {
                 var angle = this.hPos.angle(rope.end);
-                var vel = new me.Vector2d(
+                var vel = me.entityPool.newInstanceOf(
+                    "me.Vector2d",
                     Math.cos(angle) * delta,
                     Math.sin(angle) * delta
                 );

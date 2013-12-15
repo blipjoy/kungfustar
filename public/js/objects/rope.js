@@ -9,10 +9,15 @@ game.RopePart = me.ObjectEntity.extend({
         var y = this.lerp(rope.start.y, rope.end.y, step) - 16;
 
         this.parent(x, y, {
+            "image" : "smoke",
             "spritewidth" : 32,
             "spriteheight" : 32
         });
         this.z = z;
+
+        // Animation
+        this.animating = false;
+        this.renderable.size = 1;
     },
 
     "update" : function () {
@@ -24,13 +29,41 @@ game.RopePart = me.ObjectEntity.extend({
         return true;
     },
 
+    "draw" : function(context) {
+        if (this.animating) {
+            this.parent(context);
+        }
+    },
+
     "onCollision" : function () {
-        this.rope.detach();
+        if (this.rope.exploding) {
+            this.collidable = false;
+        }
+        else {
+            this.rope.detach(true);
+        }
     },
 
     "lerp" : function (start, end, step) {
         var range = end - start;
         return range * step + start;
+    },
+
+    "explode" : function () {
+        var self = this;
+        this.animating = true;
+        me.entityPool.newInstanceOf("me.Tween", this.renderable)
+            .to({
+                "alpha" : 0,
+                "size" : 2
+            }, 75)
+            .onUpdate(function () {
+                this.resize(this.size);
+            })
+            .onComplete(function () {
+                me.game.world.removeChild(self);
+            })
+            .start();
     }
 });
 
@@ -66,6 +99,7 @@ game.Rope = me.Renderable.extend({
         // Animation
         this.tick = 0;
         this.animDone = false;
+        this.exploding = false;
 
         game.playscreen.rope && game.playscreen.rope.detach();
         game.playscreen.rope = this;
@@ -146,13 +180,21 @@ game.Rope = me.Renderable.extend({
     },
 
     "removeParts" : function () {
+        var exploding = this.exploding;
         this.parts.forEach(function (part) {
-            me.game.world.removeChild(part);
+            if (exploding) {
+                setTimeout(function () {
+                    part.explode();
+                }, Math.random() * 125);
+            }
+            else {
+                me.game.world.removeChild(part);
+            }
         });
     },
 
     "adjust" : function () {
-        var pos = new me.Vector2d();
+        var pos = me.entityPool.newInstanceOf("me.Vector2d");
 
         pos.x = Math.min(this.start.x, this.end.x);
         pos.y = Math.min(this.start.y, this.end.y);
@@ -163,9 +205,13 @@ game.Rope = me.Renderable.extend({
         this.hHeight = this.height / 2;
     },
 
-    "detach" : function () {
-        me.game.world.removeChild(this);
-        game.playscreen.rope = null;
+    "detach" : function (exploding) {
+        this.exploding = exploding || false;
+
+        if (game.playscreen.rope) {
+            me.game.world.removeChild(this);
+            game.playscreen.rope = null;
+        }
 
         return false;
     }

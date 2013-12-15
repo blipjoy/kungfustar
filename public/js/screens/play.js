@@ -44,7 +44,7 @@ game.PlayScreen = me.ScreenObject.extend({
         );
 
         // Load map
-        me.levelDirector.loadLevel("test");
+        me.levelDirector.loadLevel("level1");
 
         // Add overlay
         me.game.world.addChild(new me.ImageLayer(

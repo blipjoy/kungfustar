@@ -79,7 +79,7 @@
 
     // Game engine settings.
     me.sys.gravity = 0.98;
-    me.sys.preRender = true; // Be faster!
+    me.sys.preRender = false; // Be faster!
     me.sys.stopOnAudioError = false;
     me.sys.pauseOnBlur = false;
     me.sys.resumeOnFocus = false;

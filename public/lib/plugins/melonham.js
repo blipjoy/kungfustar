@@ -1,7 +1,7 @@
 (function () {
 
 var melonham = me.plugin.Base.extend({
-    "version" : "0.9.5",
+    "version" : "0.9.11",
 
     "plot" : function (p0, p1, callback) {
         var x0 = p0.x;
@@ -20,7 +20,11 @@ var melonham = me.plugin.Base.extend({
 
         do {
             if (callback(x0, y0)) {
-                return new me.Vector2d(x0, y0);
+                return me.entityPool.newInstanceOf(
+                    "me.Vector2d",
+                    x0,
+                    y0
+                );
             }
 
             if (x0 === x1 && y0 === y1) {
@@ -35,7 +39,11 @@ var melonham = me.plugin.Base.extend({
             }
             if (x0 === x1 && y0 === y1) {
                 if (callback(x0, y0)) {
-                    return new me.Vector2d(x0, y0);
+                    return me.entityPool.newInstanceOf(
+                        "me.Vector2d",
+                        x0,
+                        y0
+                    );
                 }
                 break;
             }
@@ -71,6 +79,7 @@ var melonham = me.plugin.Base.extend({
     }
 });
 
+me.entityPool.add("me.Vector2d", me.Vector2d, true);
 me.plugin.register(melonham, "melonham");
 
 })();

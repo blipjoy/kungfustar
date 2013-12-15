@@ -10,8 +10,8 @@ game.NinjaStar = me.ObjectEntity.extend({
 
         this.renderable.addAnimation(
             "default",
-            [ 0, 1, 0, 2 ],
-            Math.random * 500
+            [ 0, 1, 0, 0, 0, 0, 2 ],
+            Math.random * 1000
         );
         this.renderable.setCurrentAnimation("default");
 
