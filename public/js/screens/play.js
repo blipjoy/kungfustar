@@ -1,6 +1,6 @@
 game.Overlay = me.ImageLayer.extend({
     "init" : function (frames) {
-        this.parent("static", c.WIDTH, c.HEIGHT, frames[0], 1001, Infinity);
+        this.parent("static", c.WIDTH, c.HEIGHT, frames[0], 1000, Infinity);
         this.floating = true;
         this.alpha = 0.25;
 
@@ -52,7 +52,7 @@ game.PlayScreen = me.ScreenObject.extend({
             c.WIDTH,
             c.HEIGHT,
             "overlay",
-            1000,
+            1001,
             Infinity
         ));
         this.overlay = new game.Overlay([

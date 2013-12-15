@@ -71,7 +71,8 @@ var melonham = me.plugin.Base.extend({
 
         return this.plot(p0, p1, function (x, y) {
             tile = getTile(x, y);
-            if (tile && tile.tileset.getTileProperties(tile.tileId).isSolid) {
+            if (tile &&
+                tile.tileset.getTileProperties(tile.tileId).isCollidable) {
                 return true;
             }
             return false;
