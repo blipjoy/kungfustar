@@ -94,6 +94,16 @@ game.PlayScreen = me.ScreenObject.extend({
                 delete self.pause_overlay;
             }
         });
+
+
+        // DEBUG
+        setInterval(function () {
+            me.game.world.addChild(new game.NinjaStar(
+                58 * 32,
+                22 * 32,
+                Math.random() * Math.PI * 2
+            ));
+        }, 1000);
     },
 
     "onDestroyEvent" : function () {
@@ -141,12 +151,13 @@ game.PlayScreen = me.ScreenObject.extend({
         var p = getPoints();
         var end = me.plugin.melonham.collide(p[0], p[1]);
 
-        me.game.world.addChild(new game.Rope(
+        me.game.world.addChild(me.entityPool.newInstanceOf(
+            "game.Rope",
             p[2],
             (end || p[1])
                 .scale(new me.Vector2d(map.tilewidth, map.tileheight))
                 .add(p[3]),
-            10 * 32, // MAGIC
+            10,
             end !== null
         ));
     },

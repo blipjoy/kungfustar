@@ -1,5 +1,41 @@
+game.RopePart = me.ObjectEntity.extend({
+    "init" : function (rope, id, max, z) {
+        this.rope = rope;
+        this.id = id;
+        this.max = max;
+
+        var step = id / max;
+        var x = this.lerp(rope.start.x, rope.end.x, step) - 16;
+        var y = this.lerp(rope.start.y, rope.end.y, step) - 16;
+
+        this.parent(x, y, {
+            "spritewidth" : 32,
+            "spriteheight" : 32
+        });
+        this.z = z;
+    },
+
+    "update" : function () {
+        var rope = this.rope;
+        var step = this.id / this.max;
+        this.pos.x = this.lerp(rope.start.x, rope.end.x, step) - 16;
+        this.pos.y = this.lerp(rope.start.y, rope.end.y, step) - 16;
+
+        return true;
+    },
+
+    "onCollision" : function () {
+        this.rope.detach();
+    },
+
+    "lerp" : function (start, end, step) {
+        var range = end - start;
+        return range * step + start;
+    }
+});
+
 game.Rope = me.Renderable.extend({
-    "init" : function (start, end, maxLength, hit, color) {
+    "init" : function (start, end, maxParts, hit, color) {
         var player = game.playscreen.player;
         var pos = new me.Vector2d();
         var w = 0;
@@ -22,23 +58,25 @@ game.Rope = me.Renderable.extend({
 
         this.animLength = 32;
         this.initLength = start.distance(end);
-        this.maxLength = maxLength;
+        this.maxParts = maxParts;
+        this.maxLength = maxParts * 32;
+
+        this.addParts();
 
         // Animation
         this.tick = 0;
         this.animDone = false;
 
         game.playscreen.rope && game.playscreen.rope.detach();
-
         game.playscreen.rope = this;
     },
 
     "update" : function () {
+        this.adjust();
+
         if (this.animDone) {
             return false;
         }
-
-        this.adjust();
 
         var now = me.timer.getTime();
         if (now - this.tick > 10) {
@@ -79,6 +117,38 @@ game.Rope = me.Renderable.extend({
         context.strokeStyle = this.color;
         context.stroke();
         context.lineWidth = 1;
+    },
+
+    "destroy" : function () {
+        this.removeParts();
+
+        if (this.parent) {
+            // ARGH!
+            this.parent();
+        }
+    },
+
+    "addParts" : function () {
+        // Make a bunch of rope parts for collision detection
+        this.parts = [];
+
+        for (var i = 0; i < this.maxParts; i++) {
+            var part = me.entityPool.newInstanceOf(
+                "game.RopePart",
+                this,
+                i,
+                this.maxParts,
+                this.z
+            );
+            this.parts.push(part);
+            me.game.world.addChild(part);
+        }
+    },
+
+    "removeParts" : function () {
+        this.parts.forEach(function (part) {
+            me.game.world.removeChild(part);
+        });
     },
 
     "adjust" : function () {

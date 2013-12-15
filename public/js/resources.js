@@ -3,6 +3,7 @@ game.resources = {
     "img" : [
         // Sprites
         "player",
+        "ninjastar",
 
         // Tilesets
         "tileset",

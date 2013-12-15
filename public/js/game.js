@@ -86,8 +86,10 @@ var game = {
         me.state.set(me.state.PLAY, game.playscreen);
 
         // Add object classes.
-        me.entityPool.add("game.Player", game.Player);
-        me.entityPool.add("game.GhostFrame", game.GhostFrame, true);
+        me.entityPool.add("game.Player",        game.Player);
+        me.entityPool.add("game.GhostFrame",    game.GhostFrame,    true);
+        me.entityPool.add("game.Rope",          game.Rope,          true);
+        me.entityPool.add("game.RopePart",      game.RopePart,      true);
 
         // Start the game.
         me.state.change(
