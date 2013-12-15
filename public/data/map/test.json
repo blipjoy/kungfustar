@@ -37,8 +37,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":96,
-                 "y":64
+                 "x":186,
+                 "y":818
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -56,7 +56,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"..\/img\/tileset.png",
+         "image":"..\/..\/..\/..\/ld28\/public\/data\/img\/tileset.png",
          "imageheight":96,
          "imagewidth":96,
          "margin":0,

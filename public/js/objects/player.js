@@ -18,8 +18,8 @@ game.GhostFrame = me.SpriteObject.extend({
             }, 200)
             .onUpdate(function () {
                 this.resize(this.size);
-            }).
-            onComplete(function () {
+            })
+            .onComplete(function () {
                 me.game.world.removeChild(this);
             })
             .start();
@@ -50,11 +50,18 @@ game.Player = me.ObjectEntity.extend({
 
         // Animation
         this.tick = me.timer.getTime();
+        this.hPos = new me.Vector2d(
+            this.pos.x + this.hWidth,
+            this.pos.y + this.hHeight
+        );
+
+        game.playscreen.player = this;
     },
 
     "update" : function () {
         var redraw = false;
         var falling = this.falling || this.jumping;
+        var sprinting = me.input.isKeyPressed("sprint");
 
         // Draw speed shadow
         var now = me.timer.getTime();
@@ -77,15 +84,19 @@ game.Player = me.ObjectEntity.extend({
             ));
         }
 
-        if (me.input.isKeyPressed("sprint")) {
-            this.setVelocity(1.5, 17);
-            this.setMaxVelocity(7, 17);
-            this.setFriction(0.95, 0);
-        }
-        else {
-            this.setVelocity(1, 17);
-            this.setMaxVelocity(5, 17);
-            this.setFriction(0.6, 0);
+        var self = this;
+        function setPhysics() {
+            if (sprinting) {
+                // YUCK!
+                self.setVelocity(1.5, 17);
+                self.setMaxVelocity(7, 17);
+                self.setFriction(0.95, 0);
+            }
+            else {
+                self.setVelocity(1, 17);
+                self.setMaxVelocity(5, 17);
+                self.setFriction(0.6, 0);
+            }
         }
 
         if (me.input.isKeyPressed("left")) {
@@ -109,11 +120,14 @@ game.Player = me.ObjectEntity.extend({
             redraw = true;
         }
 
-        if (me.input.isKeyPressed("jump") && !falling) {
-            this.renderable.setCurrentAnimation("jump");
-            this.jumping = true;
-            this.vel.y = -this.accel.y * me.timer.tick;
-            redraw = true;
+        if (me.input.isKeyPressed("jump")) {
+            game.playscreen.rope && game.playscreen.rope.detach();
+            if (!falling) {
+                this.renderable.setCurrentAnimation("jump");
+                this.jumping = true;
+                this.vel.y = -this.accel.y * me.timer.tick;
+                redraw = true;
+            }
         }
         else if (falling && !this.renderable.isCurrentAnimation("jump")) {
             this.renderable.setCurrentAnimation("jump");
@@ -121,6 +135,42 @@ game.Player = me.ObjectEntity.extend({
         }
 
         var col = this.updateMovement();
+
+        // Update half-position
+        this.hPos.x = this.pos.x + this.hWidth;
+        this.hPos.y = this.pos.y + this.hHeight;
+
+        // Limit movement to rope length
+        var rope = game.playscreen.rope
+        if (rope && rope.hit) {
+            var delta = this.hPos.distance(rope.end) - rope.maxLength;
+            if (delta > 0) {
+                var angle = this.hPos.angle(rope.end);
+                var vel = new me.Vector2d(
+                    Math.cos(angle) * delta,
+                    Math.sin(angle) * delta
+                );
+                this.pos.x += vel.x;
+                this.pos.y += vel.y;
+
+                this.vel.x += vel.x;
+                this.vel.y += vel.y;
+
+                this.falling = falling = (this.vel.y !== 0);
+            }
+
+            if (falling) {
+                this.setVelocity(5, 17);
+                this.setMaxVelocity(12, 17);
+                this.setFriction(0.001, 0);
+            }
+            else {
+                setPhysics();
+            }
+        }
+        else {
+            setPhysics();
+        }
 
         if (this.vel.x || this.vel.y) {
             this.parent();
