@@ -22,6 +22,10 @@ game.Overlay = me.ImageLayer.extend({
             return true;
         }
         return this.parent();
+    },
+
+    "reset" : function () {
+        this.alpha = 0.25;
     }
 })
 
@@ -66,13 +70,18 @@ game.PlayScreen = me.ScreenObject.extend({
         );
         overlay.isPersistent = true;
         me.game.world.addChild(overlay);
-        this.overlay = new game.Overlay([
-            "static1",
-            "static2",
-            "static3",
-            "static4"
-        ]);
-        me.game.world.addChild(this.overlay);
+        if (!this.overlay) {
+            this.overlay = new game.Overlay([
+                "static1",
+                "static2",
+                "static3",
+                "static4"
+            ]);
+            me.game.world.addChild(this.overlay);
+        }
+        else {
+            this.overlay.reset();
+        }
 
         // Handle pause
         me.event.subscribe(me.event.KEYDOWN, function (action, key) {
