@@ -60,7 +60,7 @@ game.Player = me.ObjectEntity.extend({
     },
 
     "update" : function () {
-        if (!this.inViewport && this.pos.y) {
+        if (!this.inViewport && this.pos.y > 0) {
             game.playscreen.end();
         }
 

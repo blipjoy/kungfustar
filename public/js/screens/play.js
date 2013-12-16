@@ -4,6 +4,8 @@ game.Overlay = me.ImageLayer.extend({
         this.floating = true;
         this.alpha = 0.25;
 
+        this.isPersistent = true;
+
         this.frames = frames;
         this.tick = me.timer.getTime();
         this.count = 0;
@@ -54,14 +56,16 @@ game.PlayScreen = me.ScreenObject.extend({
         me.levelDirector.loadLevel("level1");
 
         // Add overlay
-        me.game.world.addChild(new me.ImageLayer(
+        var overlay = new me.ImageLayer(
             "overlay",
             c.WIDTH,
             c.HEIGHT,
             "overlay",
             991,
             Infinity
-        ));
+        );
+        overlay.isPersistent = true;
+        me.game.world.addChild(overlay);
         this.overlay = new game.Overlay([
             "static1",
             "static2",
@@ -165,9 +169,7 @@ game.PlayScreen = me.ScreenObject.extend({
                 "alpha" : 1
             }, 500)
             .onComplete(function () {
-                me.game.viewport.fadeIn("#000", 500, function () {
-                    me.state.change(me.state.PLAY);
-                });
+                me.state.change.defer(me.state.PLAY);
             }).start();
     }
 });
