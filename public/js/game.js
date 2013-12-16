@@ -88,6 +88,7 @@ var game = {
         // Add object classes.
         me.entityPool.add("game.Player",        game.Player);
         me.entityPool.add("game.Ninja",         game.Ninja);
+        me.entityPool.add("game.Helicopter",    game.Helicopter);
         me.entityPool.add("game.NinjaStar",     game.NinjaStar,     true);
         me.entityPool.add("game.GhostFrame",    game.GhostFrame,    true);
         me.entityPool.add("game.Rope",          game.Rope,          true);

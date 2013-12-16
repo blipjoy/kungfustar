@@ -60,6 +60,10 @@ game.Player = me.ObjectEntity.extend({
     },
 
     "update" : function () {
+        if (!this.inViewport && this.pos.y) {
+            game.playscreen.end();
+        }
+
         var redraw = false;
         var falling = this.falling || this.jumping;
         var sprinting = me.input.isKeyPressed("sprint");

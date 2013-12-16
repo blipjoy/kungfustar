@@ -6,6 +6,7 @@ game.resources = {
         "ninja",
         "ninjastar",
         "smoke",
+        "helicopter",
 
         // Tilesets
         "tileset",
@@ -29,7 +30,8 @@ game.resources = {
 
     /* Maps. */
     "map" : [
-        "level1"
+        "level1",
+        "level2"
     ],
 
     /* Sound effects. */

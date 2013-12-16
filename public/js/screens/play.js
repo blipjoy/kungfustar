@@ -1,6 +1,6 @@
 game.Overlay = me.ImageLayer.extend({
     "init" : function (frames) {
-        this.parent("static", c.WIDTH, c.HEIGHT, frames[0], 1000, Infinity);
+        this.parent("static", c.WIDTH, c.HEIGHT, frames[0], 990, Infinity);
         this.floating = true;
         this.alpha = 0.25;
 
@@ -59,7 +59,7 @@ game.PlayScreen = me.ScreenObject.extend({
             c.WIDTH,
             c.HEIGHT,
             "overlay",
-            1001,
+            991,
             Infinity
         ));
         this.overlay = new game.Overlay([
@@ -163,7 +163,7 @@ game.PlayScreen = me.ScreenObject.extend({
         new me.Tween(this.overlay)
             .to({
                 "alpha" : 1
-            }, 5000)
+            }, 500)
             .onComplete(function () {
                 me.game.viewport.fadeIn("#000", 500, function () {
                     me.state.change(me.state.PLAY);
