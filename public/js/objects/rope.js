@@ -52,6 +52,9 @@ game.RopePart = me.ObjectEntity.extend({
     "explode" : function () {
         var self = this;
         this.animating = true;
+
+        me.audio.play("explode");
+
         me.entityPool.newInstanceOf("me.Tween", this.renderable)
             .to({
                 "alpha" : 0,
@@ -101,6 +104,7 @@ game.Rope = me.Renderable.extend({
         this.animDone = false;
         this.exploding = false;
 
+        me.audio.play("rope");
         game.playscreen.rope && game.playscreen.rope.detach();
         game.playscreen.rope = this;
     },

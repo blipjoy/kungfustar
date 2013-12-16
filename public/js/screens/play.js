@@ -25,13 +25,20 @@ game.Overlay = me.ImageLayer.extend({
 
 game.PlayScreen = me.ScreenObject.extend({
     "onResetEvent" : function () {
+        // Music
+        if (!me.audio.getCurrentTrack()) {
+            me.audio.playTrack("city");
+        }
+
         // Bind keys
         me.input.bindKey(me.input.KEY.SPACE,    "jump", true);
         me.input.bindKey(me.input.KEY.SHIFT,    "sprint");
 
+        me.input.bindKey(me.input.KEY.W,        "jump", true);
         me.input.bindKey(me.input.KEY.A,        "left");
         me.input.bindKey(me.input.KEY.D,        "right");
 
+        me.input.bindKey(me.input.KEY.UP,       "jump", true);
         me.input.bindKey(me.input.KEY.LEFT,     "left");
         me.input.bindKey(me.input.KEY.RIGHT,    "right");
 
@@ -94,16 +101,6 @@ game.PlayScreen = me.ScreenObject.extend({
                 delete self.pause_overlay;
             }
         });
-
-
-        // DEBUG
-        setInterval(function () {
-            me.game.world.addChild(new game.NinjaStar(
-                58 * 32,
-                22 * 32,
-                Math.random() * Math.PI * 2
-            ));
-        }, 1000);
     },
 
     "onDestroyEvent" : function () {

@@ -29,11 +29,11 @@ game.GhostFrame = me.SpriteObject.extend({
 game.Player = me.ObjectEntity.extend({
     "init" : function (x, y, settings) {
         settings.image = "player";
-        settings.spritewidth = 16 * 3;
-        settings.width = 16 * 3;
-        settings.height = 21 * 3;
+        settings.width = settings.spritewidth = 42;
+        settings.height = 63;
 
         this.parent(x, y, settings);
+        this.alwaysUpdate = true;
 
         this.setVelocity(1, 17);
         this.setMaxVelocity(5, 17);
@@ -124,6 +124,7 @@ game.Player = me.ObjectEntity.extend({
         if (me.input.isKeyPressed("jump")) {
             game.playscreen.rope && game.playscreen.rope.detach();
             if (!falling) {
+                me.audio.play("jump");
                 this.renderable.setCurrentAnimation("jump");
                 this.jumping = true;
                 this.vel.y = -this.accel.y * me.timer.tick;

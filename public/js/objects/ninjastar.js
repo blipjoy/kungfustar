@@ -20,6 +20,8 @@ game.NinjaStar = me.ObjectEntity.extend({
 
         // Animation
         this.tick = 0;
+
+        me.audio.play("ninjastar");
     },
 
     "update" : function () {
