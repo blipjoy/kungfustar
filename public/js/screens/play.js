@@ -31,6 +31,8 @@ game.Overlay = me.ImageLayer.extend({
 
 game.PlayScreen = me.ScreenObject.extend({
     "onResetEvent" : function () {
+        game.playscreen.resetting = false;
+
         // Music
         if (!me.audio.getCurrentTrack()) {
             me.audio.playTrack("city");
@@ -128,7 +130,7 @@ game.PlayScreen = me.ScreenObject.extend({
     },
 
     "mousedown" : function (e) {
-        if (me.state.isPaused()) {
+        if (me.state.isPaused() || game.playscreen.resetting) {
             return;
         }
 
@@ -174,11 +176,13 @@ game.PlayScreen = me.ScreenObject.extend({
     },
 
     "end" : function () {
+        game.playscreen.resetting = true;
         new me.Tween(this.overlay)
             .to({
                 "alpha" : 1
             }, 500)
             .onComplete(function () {
+                delete game.playscreen.rope;
                 me.state.change.defer(me.state.PLAY);
             }).start();
     }

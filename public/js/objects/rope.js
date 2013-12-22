@@ -184,17 +184,20 @@ game.Rope = me.Renderable.extend({
     },
 
     "removeParts" : function () {
-        var exploding = this.exploding;
-        this.parts.forEach(function (part) {
-            if (exploding) {
-                setTimeout(function () {
-                    part.explode();
-                }, Math.random() * 125);
-            }
-            else {
-                me.game.world.removeChild(part);
-            }
-        });
+        if (!game.playscreen.resetting) {
+            var exploding = this.exploding;
+            this.parts.forEach(function (part) {
+                if (exploding) {
+                    setTimeout(function () {
+                        part.explode();
+                    }, Math.random() * 125);
+                }
+                else {
+                    me.game.world.removeChild(part);
+                }
+            });
+        }
+        this.parts = [];
     },
 
     "adjust" : function () {
