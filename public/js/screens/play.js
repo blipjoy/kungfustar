@@ -60,17 +60,18 @@ game.PlayScreen = me.ScreenObject.extend({
         me.levelDirector.loadLevel("level1");
 
         // Add overlay
-        var overlay = new me.ImageLayer(
-            "overlay",
-            c.WIDTH,
-            c.HEIGHT,
-            "overlay",
-            991,
-            Infinity
-        );
-        overlay.isPersistent = true;
-        me.game.world.addChild(overlay);
         if (!this.overlay) {
+            var overlay = new me.ImageLayer(
+                "overlay",
+                c.WIDTH,
+                c.HEIGHT,
+                "overlay",
+                991,
+                Infinity
+            );
+            overlay.isPersistent = true;
+            me.game.world.addChild(overlay);
+
             this.overlay = new game.Overlay([
                 "static1",
                 "static2",
